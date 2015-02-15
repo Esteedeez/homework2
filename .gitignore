@@ -1,0 +1,56 @@
+#ifndef SLIDINGPUZZLESTATE_H
+#define SLIDINGPUZZLESTATE_H
+#include <math.h>
+#include <stdio.h>
+#include "LList.h"
+#include <iostream>
+
+using namespace std;
+class SlidingPuzzleState {
+public:
+	SlidingPuzzleState(const int tiles[12]);  //constructor, initializes game state, tiles place from left to right
+	void GetMoves(LList <int> &moves);	// a function which generates all legal moves.
+	bool ApplyMove(int move);  // returns true if move is legal, else false.
+	bool UndoMove(int move);  // a function which takes a move and changes the state, returns true if valid, else false
+	int GetTileInSquare(int row, int col);  //returns the number of tile. 0 if empty, -1 if out of range
+	void GetEmptySquare(int &row, int &col); // sets parameters to location of empty tile.
+	void Print(); //prints out gameboard
+	SlidingPuzzleState *Clone(); //a function which returns a pointer to new gameboard, new board is coppy of current gamestate
+	bool isSolution(); //returns true if game is solved
+
+
+
+
+private:
+	const int kUp = 0;
+	const int kDown = 1;
+	const int kLeft = 2;
+	const int kRight = 3;
+	const int tiles[];
+	void checkGameBoard();
+	void shuffleArray(int in[]);
+};
+SlidingPuzzleState::SlidingPuzzleState(const int tiles[12]) {
+	 tiles[12] = { 1, 5, 3, 7, 6, 0, 2, 11, 4, 8, 9, 10 };
+	SlidingPuzzleState *puzzleState = new SlidingPuzzleState (tiles);
+};
+
+void SlidingPuzzleState::Print() {
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 4; i++) {
+			cout << "    ";
+		}
+		cout << endl;
+	}
+}
+int SlidingPuzzleState::GetTileInSquare(int row, int col) {
+	int index = (row * 4) + col;
+	if (row > 2 || row < 0 || col > 3 || col < 0) {
+		return -1;
+	}
+	else
+		return  this -> tiles[index];
+}
+
+
+#endif
